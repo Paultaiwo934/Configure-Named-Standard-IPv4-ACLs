@@ -1,4 +1,4 @@
-<h1>Configuring Named Standard IPv4 ACLs</h1>
+<h1>Configured Named Standard IPv4 ACLs</h1>
 
 <h2>Description</h2>
 Created a standard named ACL to prevent access to a file server. The file server contains the database for the web applications. Only the Web Manager workstation PC1 and the Web Server need to access the File Server. All other traffic to the File Server were denied.

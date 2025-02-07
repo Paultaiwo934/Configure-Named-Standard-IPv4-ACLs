@@ -1,0 +1,189 @@
+Cisco Packet Tracer PC Command Line 1.0
+C:\>PING 192.168.200.100
+
+Pinging 192.168.200.100 with 32 bytes of data:
+
+Request timed out.
+Reply from 192.168.200.100: bytes=32 time<1ms TTL=127
+Reply from 192.168.200.100: bytes=32 time<1ms TTL=127
+Reply from 192.168.200.100: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.200.100:
+    Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+C:\>ping 192.168.20.3
+
+Pinging 192.168.20.3 with 32 bytes of data:
+
+Reply from 192.168.20.3: bytes=32 time<1ms TTL=128
+Reply from 192.168.20.3: bytes=32 time<1ms TTL=128
+Reply from 192.168.20.3: bytes=32 time<1ms TTL=128
+Reply from 192.168.20.3: bytes=32 time<1ms TTL=128
+
+Ping statistics for 192.168.20.3:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+C:\>
+
+
+
+R1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#ip access-list standard File_Server_Restrictions
+R1(config-std-nacl)#permit host 192.168.20.4
+R1(config-std-nacl)#permit host 192.168.100.100
+R1(config-std-nacl)#deny any
+R1(config-std-nacl)#end
+R1#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R1#show access-lists
+Standard IP access list Filer_Server_Restriction
+    10 permit host 192.168.20.4
+    20 permit host 192.168.100.100
+    30 deny any
+Standard IP access list File_Server_Restrictions
+    10 permit host 192.168.20.4
+    20 permit host 192.168.100.100
+    30 deny any
+
+R1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.	
+R1(config)#int f0/1
+R1(config-if)#ip access-group File_Server_Restrictions out
+R1(config-if)#end
+R1#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R1#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R1#show access-lists
+Standard IP access list Filer_Server_Restriction
+    10 permit host 192.168.20.4
+    20 permit host 192.168.100.100
+    30 deny any
+Standard IP access list File_Server_Restrictions
+    10 permit host 192.168.20.4
+    20 permit host 192.168.100.100
+    30 deny any
+
+R1#
+R1>enable 
+R1#show run
+Building configuration...
+
+Current configuration : 1033 bytes
+!
+version 12.3
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R1
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 192.168.100.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 192.168.200.1 255.255.255.0
+ ip access-group File_Server_Restrictions out
+ duplex auto
+ speed auto
+!
+interface Ethernet0/0/0
+ ip address 192.168.10.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Ethernet0/1/0
+ ip address 192.168.20.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list standard Filer_Server_Restriction
+ permit host 192.168.20.4
+ permit host 192.168.100.100
+ deny any
+ip access-list standard File_Server_Restrictions
+ permit host 192.168.20.4
+ permit host 192.168.100.100
+ deny any
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+
+R1#
+
+
+C:\>PING 192.168.200.100
+
+Pinging 192.168.200.100 with 32 bytes of data:
+
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+Reply from 192.168.10.1: Destination host unreachable.
+
+Ping statistics for 192.168.200.100:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\>
